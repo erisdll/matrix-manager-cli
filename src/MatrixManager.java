@@ -1,30 +1,23 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MatrixManager {
-    private Map<String, Matrix> matrices;
+    private List<Matrix> matricesArrayList;
 
     public MatrixManager() {
-        this.matrices = new HashMap<>();
+        this.matricesArrayList = new ArrayList<>();
     }
 
-    public void createMatrix(String identifier, MatrixSize matrixSize) {
-        if (identifier == null || identifier.isEmpty()) {
-            throw new IllegalArgumentException("Matrix name cannot be null or empty.");
-        } if (matrices.containsKey(identifier)) {
-            System.out.println("Matrix with the same name already exists.");
-            return;
+    public void addMatrix(Matrix matrix) {
+        matricesArrayList.add(matrix);
+    }
+
+    public Matrix getMatrixByIndex(int index) {
+        if (index < 0 || index >= matricesArrayList.size()) {
+            throw new IndexOutOfBoundsException("Invalid matrix index: " + index);
         }
-
-        Matrix matrix = new Matrix(matrixSize);
-        matrices.put(identifier, matrix);
+        return matricesArrayList.get(index);
     }
-
-    public Matrix getMatrix (String name) {
-        return matrices.get(name);
-    }
-
-    public void deleteMatrix(String name) {
-        matrices.remove(name);
+    public int getMatrixCount() {
+        return matricesArrayList.size();
     }
 }
