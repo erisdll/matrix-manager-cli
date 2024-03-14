@@ -15,26 +15,22 @@ public class Main {
             switch (choice) {
 
                 case 1:
-                    createNewMatrix(matrixManager, scanner);
+                    createMatrixCase(matrixManager, scanner);
                     break;
 
                 case 2:
-                    listMatrices(matrixManager);
+                    listMatricesCase(matrixManager);
                     break;
 
                 case 3:
-
+                    populateMatrixCase(matrixManager, scanner);
                     break;
 
                 case 4:
-
+                    selectMatrixCase(matrixManager);
                     break;
 
                 case 5:
-
-                    break;
-
-                case 6:
                     System.out.println("Exiting...");
                     break;
 
@@ -43,40 +39,51 @@ public class Main {
                     break;
             }
         } while (choice != 6);
-
         scanner.close();
     }
 
-    private static void listMatrices(MatrixManager matrixManager) {
-    }
-
-    private static void printToConsole(Matrix matrix) {
-
-    }
-
-
     private static void printMenu() {
         System.out.println("Type 1 to create a new matrix");
-        System.out.println("Type 2 to print the matrix");
-        System.out.println("Type 3 to observe a position in the matrix");
-        System.out.println("Type 4 to change a value in the matrix");
-        System.out.println("Type 5 to delete the matrix");
-        System.out.println("Type 6 to exit the program");
+        System.out.println("Type 2 to list exiting matrices");
+        System.out.println("Type 3 to populate a matrix");
+        System.out.println("Type 4 to select a matrix to operate on");
+        System.out.println("Type 5 to exit program");
     }
 
-    private static void createNewMatrix(MatrixManager matrixManager, Scanner scanner) {
-        System.out.println("Enter the name for the new matrix:");
-        String name = scanner.next();
+    private static void createMatrixCase(MatrixManager matrixManager, Scanner scanner) {
+        Matrix matrix = new Matrix(getMatrixSizeFromConsole(scanner));
+        matrixManager.addMatrix(matrix);
+        System.out.println("Matrix created");
+        populateMatrixCase(matrixManager, scanner);
+    }
 
-        System.out.println("Enter the number of rows:");
-        int rows = scanner.nextInt();
+    private static void populateMatrixCase(MatrixManager matrixManager, Scanner scanner) {
+        listMatricesCase(matrixManager);
+        System.out.println("Choose matrix to populate:");
+        int matrixIndex = (scanner.nextInt() - 1);
+        Matrix matrix = matrixManager.getMatrixByIndex(matrixIndex);
 
-        System.out.println("Enter the number of columns:");
-        int columns = scanner.nextInt();
+        for (int row = 0; row < matrix.getRowCount(); row++) {
+            for (int column = 0; column < matrix.getColumnCount(); column++) {
+                System.out.println("Insert value for position (" + (row + 1) + ", " + (column + 1) + "):");
+                int value = getValueFromConsole(scanner);
+                matrix.setElementValue(new SimpleMatrixPosition(row, column), value);
+            }
+        }
+    }
 
-        MatrixSize matrixSize = new SimpleMatrixSize(rows, columns);
-        matrixManager.createMatrix(name, matrixSize);
-        System.out.println("Matrix created successfully.");
+    private static void listMatricesCase(MatrixManager matrixManager) {
+        System.out.println("List of matrices:");
+        for (int index = 0; index < matrixManager.getMatrixCount(); index++) {
+            System.out.println(" ");
+            Matrix matrix = matrixManager.getMatrixByIndex(index);
+            matrix.printMatrix();
+        }
+        System.out.println(" ");
+    }
+
+    private static void selectMatrixCase(MatrixManager matrixManager) {
+
     }
 
     private static MatrixSize getMatrixSizeFromConsole(Scanner scanner) {
