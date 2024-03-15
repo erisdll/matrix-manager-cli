@@ -1,4 +1,4 @@
-public class SimpleMatrixPosition implements MatrixPosition{
+public class SimpleMatrixPosition implements MatrixPosition {
     private final int row;
     private final int column;
 

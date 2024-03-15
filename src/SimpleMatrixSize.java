@@ -1,4 +1,4 @@
-public class SimpleMatrixSize implements MatrixSize{
+public class SimpleMatrixSize implements MatrixSize {
     private final int rows;
     private final int columns;
 
