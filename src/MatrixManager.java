@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MatrixManager {
@@ -18,7 +19,9 @@ public class MatrixManager {
         }
         return matricesArrayList.get(index);
     }
-
+    public List<Matrix> listMatrices() {
+        return Collections.unmodifiableList(matricesArrayList);
+    }
     public int getMatrixCount() {
         return matricesArrayList.size();
     }
