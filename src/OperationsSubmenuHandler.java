@@ -13,15 +13,13 @@ public class OperationsSubmenuHandler {
     private static void printOperationsSubmenu() {
         System.out.println("Type 1 to repopulate matrix");
         System.out.println("Type 2 to change an element's value");
-        System.out.println("Type 3 to find the determinant");
-        System.out.println("Type 4 to invert the matrix");
+        System.out.println("Type 3 to find determinant");
+        System.out.println("Type 4 to invert matrix");
         System.out.println("Type 5 to transpose matrix");
-        System.out.println("Type 6 to add another matrix");
+        System.out.println("Type 6 to add to another matrix");
         System.out.println("Type 7 to subtract another matrix");
-        System.out.println("Type 8 to multiply by scalar");
-        System.out.println("Type 9 to multiply by another matrix");
-        System.out.println("Type 10 to divide by scalar");
-        System.out.println("Type 11 to divide by another matrix");
+        System.out.println("Type 8 to multiply matrix");
+        System.out.println("Type 9 to divide matrix");
         System.out.println("Type 0 to return to main menu");
     }
 
@@ -45,11 +43,20 @@ public class OperationsSubmenuHandler {
     }
 
     private void repopulateMatrixOption(Matrix matrix, Scanner scanner) {
-
+        for (int row = 0; row < matrix.getRowCount(); row++) {
+            for (int column = 0; column < matrix.getColumnCount(); column++) {
+                System.out.println("Insert value for position (" + row + ", " + column + ").");
+                matrix.setElementValue(new SimpleMatrixPosition(row, column), scanner.nextInt());
+            }
+        }
+        System.out.println(" ");
+        matrix.printMatrix();
     }
 
     private void changeElementValueOption(Matrix matrix, Scanner scanner) {
-
+        matrix.setElementValue(getPositionFromConsole(scanner), getValueFromConsole(scanner));
+        matrix.printMatrix();
+        System.out.println(" ");
     }
 
     private static MatrixPosition getPositionFromConsole(Scanner scanner) {
@@ -60,4 +67,11 @@ public class OperationsSubmenuHandler {
         int column = scanner.nextInt() - 1;
         return new SimpleMatrixPosition(row, column);
     }
+
+    private static Integer getValueFromConsole(Scanner scanner) {
+        System.out.println("Insert desired value:");
+        return scanner.nextInt();
+
+    }
 }
+
