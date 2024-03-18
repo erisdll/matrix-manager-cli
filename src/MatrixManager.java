@@ -13,16 +13,18 @@ public class MatrixManager {
         matricesArrayList.add(matrix);
     }
 
-    public Matrix getMatrixByIndex(int index) {
+    public Matrix selectMatrix(int index) {
         if (index < 0 || index >= matricesArrayList.size()) {
-            throw new IndexOutOfBoundsException("Invalid matrix index: " + index);
+            throw new IndexOutOfBoundsException();
         }
         return matricesArrayList.get(index);
     }
-    public List<Matrix> listMatrices() {
+
+    public List<Matrix> listAllMatrices() {
         return Collections.unmodifiableList(matricesArrayList);
     }
-    public int getMatrixCount() {
+
+    public int getMatricesCount() {
         return matricesArrayList.size();
     }
 }
