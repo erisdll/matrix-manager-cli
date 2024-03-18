@@ -9,11 +9,11 @@ public class Matrix {
         this.matrix = new Integer[this.rows][this.columns];
     }
 
-    public int getRowCount() {
+    public int getRows() {
         return rows;
     }
 
-    public int getColumnCount() {
+    public int getColumns() {
         return columns;
     }
 
