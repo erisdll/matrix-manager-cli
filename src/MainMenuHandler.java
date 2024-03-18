@@ -1,13 +1,13 @@
 import java.util.Scanner;
 
 public class MainMenuHandler {
-    private final OperationsSubmenuHandler operationsSubMenuHandler;
-    private final MatrixManager matrixManager;
     private final Scanner scanner;
+    private final MatrixManager matrixManager;
+    private final OperationsSubmenuHandler operationsSubMenuHandler;
     public MainMenuHandler(MatrixManager matrixManager, Scanner scanner) {
-        this.operationsSubMenuHandler = new OperationsSubmenuHandler();
-        this.matrixManager = matrixManager;
         this.scanner = scanner;
+        this.matrixManager = matrixManager;
+        this.operationsSubMenuHandler = new OperationsSubmenuHandler(matrixManager, scanner);
     }
 
     public void startMainMenu() {
@@ -29,15 +29,15 @@ public class MainMenuHandler {
     private void handleMainMenuChoice(int choice) {
         switch (choice) {
             case 1:
-                createMatrixOption(matrixManager, scanner);
+                createMatrixOption();
                 break;
 
             case 2:
-                listMatricesOption(matrixManager);
+                listMatricesOption();
                 break;
 
             case 3:
-                selectMatrixOption(matrixManager, scanner);
+                selectMatrixOption();
                 break;
 
             case 0:
@@ -49,11 +49,11 @@ public class MainMenuHandler {
         }
     }
 
-    private static void createMatrixOption(MatrixManager matrixManager, Scanner scanner) {
+    private void createMatrixOption() {
         Matrix matrix = new Matrix(getMatrixSizeFromConsole(scanner));
         matrixManager.addMatrixToList(matrix);
-        for (int row = 0; row < matrix.getRowCount(); row++) {
-            for (int column = 0; column < matrix.getColumnCount(); column++) {
+        for (int row = 0; row < matrix.getRows(); row++) {
+            for (int column = 0; column < matrix.getColumns(); column++) {
                 System.out.println("Insert value for position (" + (row + 1 + ", " + (column + 1) + "):"));
                 int value = getValueFromConsole(scanner);
                 matrix.setElementValue(new SimpleMatrixPosition(row, column), value);
@@ -62,10 +62,10 @@ public class MainMenuHandler {
         System.out.println("Matrix created successfully!");
     }
 
-    private static void listMatricesOption(MatrixManager matrixManager) {
+    private void listMatricesOption() {
         System.out.println("List of matrices:");
         int index = 0;
-        for (Matrix matrix : matrixManager.listMatrices()) {
+        for (Matrix matrix : matrixManager.listAllMatrices()) {
             System.out.println("\nMatrix n." + (index + 1) + ":");
             matrix.printMatrix();
             index++;
@@ -73,28 +73,25 @@ public class MainMenuHandler {
         System.out.println(" ");
     }
 
-    private void selectMatrixOption(MatrixManager matrixManager, Scanner scanner) {
+    private void selectMatrixOption() {
         System.out.println("List of available matrices:");
+
         int index = 0;
-        for (Matrix matrix : matrixManager.listMatrices()) {
+        for (Matrix matrix : matrixManager.listAllMatrices()) {
             System.out.println("\nMatrix n." + (index + 1) + ":");
             matrix.printMatrix();
             index++;
         }
-        System.out.println(" ");
-        System.out.println("Enter the number of the matrix you want to select:");
-        int matrixChoice = scanner.nextInt();
 
-        if (matrixChoice > 0 && matrixChoice <= matrixManager.getMatrixCount()) {
-            Matrix selectedMatrix = matrixManager.getMatrixByIndex(matrixChoice -1 );
+        try {
+            System.out.println("Enter the number of the matrix you want to select:");
+            Matrix selectedMatrix = matrixManager.selectMatrix(scanner.nextInt() - 1 );
             System.out.println("Selected Matrix:");
             selectedMatrix.printMatrix();
             System.out.println(" ");
-
-            operationsSubMenuHandler.startOperationsSubMenu(selectedMatrix, scanner);
-
-        } else {
-            System.out.println("No such matrix!");
+            operationsSubMenuHandler.startOperationsSubmenuOnMatrix(selectedMatrix);
+        } catch (Exception e) {
+            System.out.println("No Such Matrix!");
         }
     }
 
