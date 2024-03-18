@@ -23,8 +23,4 @@ public class MatrixManager {
     public List<Matrix> listAllMatrices() {
         return Collections.unmodifiableList(matricesArrayList);
     }
-
-    public int getMatricesCount() {
-        return matricesArrayList.size();
-    }
 }
