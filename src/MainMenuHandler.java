@@ -50,13 +50,19 @@ public class MainMenuHandler {
     }
 
     private void createMatrixOption() {
-        Matrix matrix = new Matrix(getMatrixSizeFromConsole(scanner));
+        System.out.println("Insert number of rows");
+        int rows = scanner.nextInt();
+        System.out.println("Insert number of columns");
+        int columns = scanner.nextInt();
+
+        Matrix matrix = new Matrix(rows, columns);
         matrixManager.addMatrixToList(matrix);
+
         for (int row = 0; row < matrix.getRows(); row++) {
             for (int column = 0; column < matrix.getColumns(); column++) {
                 System.out.println("Insert value for position (" + (row + 1 + ", " + (column + 1) + "):"));
                 int value = getValueFromConsole(scanner);
-                matrix.setElementValue(new MatrixPosition(row, column), value);
+                matrix.setElementValue(row, column, value);
             }
         }
         System.out.println("Matrix created successfully!");
@@ -93,14 +99,6 @@ public class MainMenuHandler {
         } catch (Exception e) {
             System.out.println("No Such Matrix!");
         }
-    }
-
-    private static MatrixSize getMatrixSizeFromConsole(Scanner scanner) {
-        System.out.println("Insert number of rows");
-        int rows = scanner.nextInt();
-        System.out.println("Insert number of columns");
-        int columns = scanner.nextInt();
-        return new MatrixSize(rows, columns);
     }
 
     private static Integer getValueFromConsole(Scanner scanner) {
