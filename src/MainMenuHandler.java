@@ -3,11 +3,11 @@ import java.util.Scanner;
 public class MainMenuHandler {
     private final Scanner scanner;
     private final MatrixManager matrixManager;
-    private final OperationsSubmenuHandler operationsSubMenuHandler;
+    private final SubmenuHandler subMenuHandler;
     public MainMenuHandler(MatrixManager matrixManager, Scanner scanner) {
         this.scanner = scanner;
         this.matrixManager = matrixManager;
-        this.operationsSubMenuHandler = new OperationsSubmenuHandler(matrixManager, scanner);
+        this.subMenuHandler = new SubmenuHandler(matrixManager, scanner);
     }
 
     public void startMainMenu() {
@@ -56,7 +56,7 @@ public class MainMenuHandler {
             for (int column = 0; column < matrix.getColumns(); column++) {
                 System.out.println("Insert value for position (" + (row + 1 + ", " + (column + 1) + "):"));
                 int value = getValueFromConsole(scanner);
-                matrix.setElementValue(new SimpleMatrixPosition(row, column), value);
+                matrix.setElementValue(new MatrixPosition(row, column), value);
             }
         }
         System.out.println("Matrix created successfully!");
@@ -89,7 +89,7 @@ public class MainMenuHandler {
             System.out.println("Selected Matrix:");
             selectedMatrix.printMatrix();
             System.out.println(" ");
-            operationsSubMenuHandler.startOperationsSubmenuOnMatrix(selectedMatrix);
+            subMenuHandler.startOperationsSubmenuOnMatrix(selectedMatrix);
         } catch (Exception e) {
             System.out.println("No Such Matrix!");
         }
@@ -100,8 +100,7 @@ public class MainMenuHandler {
         int rows = scanner.nextInt();
         System.out.println("Insert number of columns");
         int columns = scanner.nextInt();
-        return new SimpleMatrixSize(rows, columns) {
-        };
+        return new MatrixSize(rows, columns);
     }
 
     private static Integer getValueFromConsole(Scanner scanner) {

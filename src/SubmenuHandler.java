@@ -1,11 +1,11 @@
 import java.util.Scanner;
 
-public class OperationsSubmenuHandler {
+public class SubmenuHandler {
 
     private final Scanner scanner;
     private final MatrixManager matrixManager;
 
-    public OperationsSubmenuHandler(MatrixManager matrixManager, Scanner scanner) {
+    public SubmenuHandler(MatrixManager matrixManager, Scanner scanner) {
         this.scanner = scanner;
         this.matrixManager = matrixManager;
     }
@@ -59,7 +59,7 @@ public class OperationsSubmenuHandler {
         for (int row = 0; row < matrix.getRows(); row++) {
             for (int column = 0; column < matrix.getColumns(); column++) {
                 System.out.println("Insert value for position (" + row + ", " + column + ").");
-                matrix.setElementValue(new SimpleMatrixPosition(row, column), scanner.nextInt());
+                matrix.setElementValue(new MatrixPosition(row, column), scanner.nextInt());
             }
         }
         System.out.println(" ");
@@ -80,7 +80,7 @@ public class OperationsSubmenuHandler {
         } else {
             for (int row = 0; row < matrix.getRows(); row++) {
                 for (int column = 0; column < matrix.getColumns(); column++) {
-                    MatrixPosition pos = new SimpleMatrixPosition(row, column);
+                    MatrixPosition pos = new MatrixPosition(row, column);
                     matrix.setElementValue(pos, matrix.getElementValue(pos) + secondMatrix.getElementValue(pos));
                 }
             }
@@ -97,7 +97,7 @@ public class OperationsSubmenuHandler {
         } else {
             for (int row = 0; row < matrix.getRows(); row++) {
                 for (int column = 0; column < matrix.getColumns(); column++) {
-                    MatrixPosition pos = new SimpleMatrixPosition(row, column);
+                    MatrixPosition pos = new MatrixPosition(row, column);
                     matrix.setElementValue(pos, matrix.getElementValue(pos) - secondMatrix.getElementValue(pos));
                 }
             }
@@ -110,9 +110,9 @@ public class OperationsSubmenuHandler {
 
         String operationString = switch (operation) {
             case "addition" -> "add to:";
-            case "subtraction" -> "subtract:";
+            case "subtraction" -> "subtract from:";
             case "multiplication" -> "multiply by:";
-            case "division" -> "divide by";
+            case "division" -> "divide by: ";
             default -> null;
         };
 
@@ -135,7 +135,7 @@ public class OperationsSubmenuHandler {
         int row = scanner.nextInt() - 1;
         System.out.println("Column:");
         int column = scanner.nextInt() - 1;
-        return new SimpleMatrixPosition(row, column);
+        return new MatrixPosition(row, column);
     }
 
     private Integer getValueFromConsole() {

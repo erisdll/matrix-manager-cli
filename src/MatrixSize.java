@@ -1,5 +1,17 @@
-public interface MatrixSize {
-    int getRows();
+public class MatrixSize {
+    private final int rows;
+    private final int  columns;
 
-    int getColumns();
+    public MatrixSize(int rows, int columns) {
+        this.rows = rows;
+        this.columns = columns;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+         return columns;
+    }
 }
