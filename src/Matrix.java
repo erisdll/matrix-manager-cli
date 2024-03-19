@@ -3,9 +3,9 @@ public class Matrix {
     private Integer columns;
     private Integer[][] matrix;
 
-    public Matrix(MatrixSize matrixSize) {
-        this.rows = matrixSize.getRows();
-        this.columns = matrixSize.getColumns();
+    public Matrix(int rows, int columns) {
+        this.rows = rows;
+        this.columns = columns;
         this.matrix = new Integer[this.rows][this.columns];
     }
 
@@ -17,19 +17,15 @@ public class Matrix {
         return columns;
     }
 
-    public void setElementValue(MatrixPosition matrixPosition, int value) {
-        int row = matrixPosition.getRow();
-        int column = matrixPosition.getColumn();
-        if (!isValidIndex(matrixPosition)) {
+    public void setElementValue(int row, int column, int value) {
+        if (!isValidIndex(row, column)) {
             throw new IllegalArgumentException("Invalid position!");
         }
         matrix[row][column] = value;
     }
 
-    public Integer getElementValue(MatrixPosition matrixPosition) {
-        int row = matrixPosition.getRow();
-        int column = matrixPosition.getColumn();
-        if (isValidIndex(matrixPosition)) {
+    public Integer getElementValue(int row, int column) {
+        if (isValidIndex(row, column)) {
             return matrix[row][column];
         } else {
             throw new IllegalArgumentException("Invalid position!");
@@ -45,9 +41,7 @@ public class Matrix {
         }
     }
 
-    private boolean isValidIndex(MatrixPosition matrixPosition) {
-        int row = matrixPosition.getRow();
-        int column = matrixPosition.getColumn();
+    private boolean isValidIndex(int row, int column) {
         return row >= 0 && row < rows && column >= 0 && column < columns;
     }
 }
