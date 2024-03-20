@@ -6,7 +6,13 @@ public class Matrix {
     public Matrix(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
-        this.matrix = new Integer[this.rows][this.columns];
+        this.matrix = new Integer[rows][columns];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                matrix[i][j] = 0;
+            }
+        }
     }
 
     public int getRows() {
