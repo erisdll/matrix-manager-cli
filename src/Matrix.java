@@ -17,14 +17,14 @@ public class Matrix {
         return columns;
     }
 
-    public void setElementValue(int row, int column, int value) {
+    public void setValue(int row, int column, int value) {
         if (!isValidIndex(row, column)) {
             throw new IllegalArgumentException("Invalid position!");
         }
         matrix[row][column] = value;
     }
 
-    public Integer getElementValue(int row, int column) {
+    public Integer getValue(int row, int column) {
         if (isValidIndex(row, column)) {
             return matrix[row][column];
         } else {

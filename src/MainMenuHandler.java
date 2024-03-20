@@ -62,7 +62,7 @@ public class MainMenuHandler {
             for (int column = 0; column < matrix.getColumns(); column++) {
                 System.out.println("Insert value for position (" + (row + 1 + ", " + (column + 1) + "):"));
                 int value = getValueFromConsole(scanner);
-                matrix.setElementValue(row, column, value);
+                matrix.setValue(row, column, value);
             }
         }
         System.out.println("Matrix created successfully!");
