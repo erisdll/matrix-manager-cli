@@ -61,7 +61,7 @@ public class MainMenuHandler {
         for (int row = 0; row < matrix.getRows(); row++) {
             for (int column = 0; column < matrix.getColumns(); column++) {
                 System.out.println("Insert value for position (" + (row + 1 + ", " + (column + 1) + "):"));
-                int value = getValueFromConsole(scanner);
+                double value = getValueFromConsole(scanner);
                 matrix.setValue(row, column, value);
             }
         }
@@ -101,8 +101,8 @@ public class MainMenuHandler {
         }
     }
 
-    private static Integer getValueFromConsole(Scanner scanner) {
+    private static double getValueFromConsole(Scanner scanner) {
         System.out.println("Insert desired value:");
-        return scanner.nextInt();
+        return scanner.nextDouble();
     }
 }

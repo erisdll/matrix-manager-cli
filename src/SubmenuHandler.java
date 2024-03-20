@@ -63,7 +63,7 @@ public class SubmenuHandler {
         for (int row = 0; row < matrix.getRows(); row++) {
             for (int column = 0; column < matrix.getColumns(); column++) {
                 System.out.println("Insert value for position (" + row + ", " + column + ").");
-                matrix.setValue(row, column, scanner.nextInt());
+                matrix.setValue(row, column, scanner.nextDouble());
             }
         }
         System.out.println(" ");
@@ -78,7 +78,7 @@ public class SubmenuHandler {
         int column = (scanner.nextInt() - 1);
 
         System.out.println("Insert new value:");
-        int value = scanner.nextInt();
+        double value = scanner.nextDouble();
 
         matrix.setValue(row, column, value);
         matrix.printMatrix();
@@ -92,9 +92,9 @@ public class SubmenuHandler {
         } else {
             for (int row = 0; row < matrixA.getRows(); row++) {
                 for (int column = 0; column < matrixA.getColumns(); column++) {
-                    int valueA = matrixA.getValue(row, column);
-                    int valueB = matrixB.getValue(row, column);
-                    int finalValue = valueA + valueB;
+                    double valueA = matrixA.getValue(row, column);
+                    double valueB = matrixB.getValue(row, column);
+                    double finalValue = valueA + valueB;
                     matrixA.setValue(row, column, finalValue);
                 }
             }
@@ -111,9 +111,9 @@ public class SubmenuHandler {
         } else {
             for (int row = 0; row < matrixA.getRows(); row++) {
                 for (int column = 0; column < matrixA.getColumns(); column++) {
-                    int valueA = matrixA.getValue(row, column);
-                    int valueB = matrixB.getValue(row, column);
-                    int finalValue = valueA - valueB;
+                    double valueA = matrixA.getValue(row, column);
+                    double valueB = matrixB.getValue(row, column);
+                    double finalValue = valueA - valueB;
                     matrixA.setValue(row, column, finalValue);
                 }
             }
@@ -144,13 +144,13 @@ public class SubmenuHandler {
 
     private void multiplyByScalar(Matrix matrixA) {
         System.out.println("Please insert multiplier for scalar multiplication:");
-        int scalar = scanner.nextInt();
+        double scalar = scanner.nextDouble();
 
         Matrix matrixB = new Matrix(matrixA.getRows(), matrixA.getColumns());
 
         for (int i = 0; i < matrixA.getRows(); i++) {
             for (int j = 0; j < matrixA.getColumns(); j++) {
-                int newValue = (matrixA.getValue(i, j) * scalar);
+                double newValue = (matrixA.getValue(i, j) * scalar);
                 matrixB.setValue(i, j, newValue);
             }
         }
@@ -170,7 +170,7 @@ public class SubmenuHandler {
             for (int i = 0; i < matrixC.getRows(); i++) {
                 for (int j = 0; j < matrixC.getColumns(); j++) {
                     for (int k = 0; k < matrixA.getColumns(); k++) {
-                        int value = matrixC.getValue(i,j) + (matrixA.getValue(i, k) * matrixB.getValue(k, j));
+                        double value = matrixC.getValue(i,j) + (matrixA.getValue(i, k) * matrixB.getValue(k, j));
                         matrixC.setValue(i, j, value);
                     }
                 }
