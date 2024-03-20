@@ -46,6 +46,10 @@ public class SubmenuHandler {
                 subtractAnotherMatrixOption(matrix);
                 break;
 
+            case 5:
+                multiplyMatrixOption(matrix);
+                break;
+
             case 0:
                 System.out.println("Exiting program!");
                 return;
@@ -59,7 +63,7 @@ public class SubmenuHandler {
         for (int row = 0; row < matrix.getRows(); row++) {
             for (int column = 0; column < matrix.getColumns(); column++) {
                 System.out.println("Insert value for position (" + row + ", " + column + ").");
-                matrix.setElementValue(row, column, scanner.nextInt());
+                matrix.setValue(row, column, scanner.nextInt());
             }
         }
         System.out.println(" ");
@@ -76,22 +80,22 @@ public class SubmenuHandler {
         System.out.println("Insert new value:");
         int value = scanner.nextInt();
 
-        matrix.setElementValue(row, column, value);
+        matrix.setValue(row, column, value);
         matrix.printMatrix();
     }
 
     private void addAnotherMatrixOption(Matrix matrixA) {
-        Matrix matrixB = selectSecondMatrixForOperation("addition");
+        Matrix matrixB = selectSecondMatrixForOp("addition");
 
         if ( matrixA.getRows() != matrixB.getRows() || matrixA.getColumns() != matrixB.getColumns()) {
             System.out.println("Cannot add matrices of different dimensions!");
         } else {
             for (int row = 0; row < matrixA.getRows(); row++) {
                 for (int column = 0; column < matrixA.getColumns(); column++) {
-                    int valueA = matrixA.getElementValue(row, column);
-                    int valueB = matrixB.getElementValue(row, column);
+                    int valueA = matrixA.getValue(row, column);
+                    int valueB = matrixB.getValue(row, column);
                     int finalValue = valueA + valueB;
-                    matrixA.setElementValue(row, column, finalValue);
+                    matrixA.setValue(row, column, finalValue);
                 }
             }
             System.out.println("Result:");
@@ -100,17 +104,17 @@ public class SubmenuHandler {
     }
 
     private void subtractAnotherMatrixOption(Matrix matrixA) {
-        Matrix matrixB = selectSecondMatrixForOperation("subtraction");
+        Matrix matrixB = selectSecondMatrixForOp("subtraction");
 
         if ( matrixA.getRows() != matrixB.getRows() || matrixA.getColumns() != matrixB.getColumns()) {
             System.out.println("Cannot subtract matrices of different dimensions!");
         } else {
             for (int row = 0; row < matrixA.getRows(); row++) {
                 for (int column = 0; column < matrixA.getColumns(); column++) {
-                    int valueA = matrixA.getElementValue(row, column);
-                    int valueB = matrixB.getElementValue(row, column);
+                    int valueA = matrixA.getValue(row, column);
+                    int valueB = matrixB.getValue(row, column);
                     int finalValue = valueA - valueB;
-                    matrixA.setElementValue(row, column, finalValue);
+                    matrixA.setValue(row, column, finalValue);
                 }
             }
             System.out.println("Result:");
@@ -118,7 +122,7 @@ public class SubmenuHandler {
         }
     }
 
-    private void multiplyByOption(Matrix matrix) {
+    private void multiplyMatrixOption(Matrix matrix) {
         System.out.println("Type 1 for scalar multiplication.");
         System.out.println("Type 2 for matrix multiplication.");
         System.out.println("Type 3 to cancel operation.");
@@ -127,8 +131,8 @@ public class SubmenuHandler {
             case 1: multiplyByScalar(matrix);
                 break;
 
-//            case 2: multiplyByMatrix(matrix);
-//                break;
+            case 2: multiplyByMatrix(matrix);
+                break;
 
             case 3:
                 return;
@@ -144,34 +148,34 @@ public class SubmenuHandler {
 
         for (int row = 0; row < matrix.getRows(); row++) {
             for (int column = 0; column < matrix.getColumns(); column++) {
-                int newValue = (matrix.getElementValue(row, column) * scalar);
-                matrix.setElementValue(column, row, newValue);
+                int newValue = (matrix.getValue(row, column) * scalar);
+                matrix.setValue(column, row, newValue);
             }
         }
     }
 
-//    private void multiplyByMatrix(Matrix matrixA) {
-//        Matrix matrixB = selectSecondMatrixForOperation("multiplication");
-//
-//        if (matrixA.getColumns() != matrixB.getRows()) {
-//            System.out.println("Cannot multiply selected matrices!");
-//            System.out.println("The number of columns in matrix A must be equal to the number of rows in matrix B.");
-//        } else {
-//            Matrix matrixC = new Matrix(matrixA.getRows(), matrixB.getColumns());
-//
-//            for (int i = 0; i < matrixB.getColumns(); i++) {
-//                for (int j = 0; j < matrixC.getColumns(); j++) {
-//                    for (int k = 0; k < ; k++) {
-//                        matrixC.setElementValue(i, j, value);
-//
-//                    }
-//                }
-//            }
-//
-//        }
-//    }
+    private void multiplyByMatrix(Matrix matrixA) {
+        Matrix matrixB = selectSecondMatrixForOp("multiplication");
 
-    private Matrix selectSecondMatrixForOperation(String operation) {
+        if (matrixA.getColumns() != matrixB.getRows()) {
+            System.out.println("Cannot multiply selected matrices!");
+            System.out.println("The number of columns in matrix A must be equal to the number of rows in matrix B.");
+        } else {
+            Matrix matrixC = new Matrix(matrixA.getRows(), matrixB.getColumns());
+
+            for (int i = 0; i < matrixC.getRows(); i++) {
+                for (int j = 0; j < matrixC.getColumns(); j++) {
+                    for (int k = 0; k < matrixA.getColumns(); k++) {
+                        int value = matrixC.getValue(i,j)+ (matrixA.getValue(i, k) * matrixB.getValue(k, j));
+                        matrixC.setValue(i, j, value);
+                    }
+                }
+            }
+            matrixC.printMatrix();
+        }
+    }
+
+    private Matrix selectSecondMatrixForOp(String operation) {
         String operationString = switch (operation) {
             case "addition" -> "add to:";
             case "subtraction" -> "subtract from:";
