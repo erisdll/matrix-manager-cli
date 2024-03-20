@@ -164,17 +164,18 @@ public class SubmenuHandler {
             System.out.println("Cannot multiply selected matrices!");
             System.out.println("The number of columns in matrix A must be equal to the number of rows in matrix B.");
         } else {
+
             Matrix matrixC = new Matrix(matrixA.getRows(), matrixB.getColumns());
 
             for (int i = 0; i < matrixC.getRows(); i++) {
                 for (int j = 0; j < matrixC.getColumns(); j++) {
                     for (int k = 0; k < matrixA.getColumns(); k++) {
-                        int value = matrixC.getValue(i,j)+ (matrixA.getValue(i, k) * matrixB.getValue(k, j));
+                        int value = matrixC.getValue(i,j) + (matrixA.getValue(i, k) * matrixB.getValue(k, j));
                         matrixC.setValue(i, j, value);
                     }
                 }
             }
-            matrixC.printMatrix();
+            matrixManager.printMatrix(matrixC);
         }
     }
 
