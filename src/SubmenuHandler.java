@@ -9,7 +9,7 @@ public class SubmenuHandler {
         this.scanner = scanner;
         this.matrixManager = matrixManager;
     }
-    public void startOperationsSubmenuOnMatrix(Matrix selectedMatrix) {
+    public void startOperationsSubmenuOn(Matrix selectedMatrix) {
         int choice;
         do {
             printOperationsSubmenu();
@@ -23,8 +23,8 @@ public class SubmenuHandler {
         System.out.println("Type 2 to change an element's value");
         System.out.println("Type 3 to add to another matrix");
         System.out.println("Type 4 to subtract another matrix");
-        System.out.println("Type 5 to multiply matrix");
-        System.out.println("Type 6 to divide matrix");
+        System.out.println("Type 5 to multiply matrix by scalar");
+        System.out.println("Type 6 to multiply matrix by another matrix");
         System.out.println("Type 0 to return to main menu");
     }
 
@@ -47,7 +47,11 @@ public class SubmenuHandler {
                 break;
 
             case 5:
-                multiplyMatrixOption(matrix);
+                multiplyByScalarOption(matrix);
+                break;
+
+            case 6:
+                multiplyByMatrixOption(matrix);
                 break;
 
             case 0:
@@ -62,129 +66,76 @@ public class SubmenuHandler {
     private void repopulateMatrixOption(Matrix matrix) {
         for (int row = 0; row < matrix.getRows(); row++) {
             for (int column = 0; column < matrix.getColumns(); column++) {
-                System.out.println("Insert value for position (" + row + ", " + column + ").");
-                matrix.setValue(row, column, scanner.nextDouble());
+                double value = loopPromptForDoubleInput("Insert value for position (" + row + ", " + column + ").");
+                matrix.setValue(row, column, value);
             }
         }
         System.out.println(" ");
-        matrix.printMatrix();
+        matrixManager.printMatrix(matrix);
     }
 
     private void changeOneElementValueOption(Matrix matrix) {
-        System.out.println("Insert position for element change:\nRow:");
-        int row = (scanner.nextInt() - 1);
-
-        System.out.println("Column:");
-        int column = (scanner.nextInt() - 1);
-
-        System.out.println("Insert new value:");
-        double value = scanner.nextDouble();
-
+        int row = loopPromptForIntInput("Insert position for element change:\nRow:") - 1;
+        int column = loopPromptForIntInput("Column:") - 1;
+        double value = loopPromptForDoubleInput("Insert new value:");
         matrix.setValue(row, column, value);
-        matrix.printMatrix();
+        matrixManager.printMatrix(matrix);
     }
 
-    private void addAnotherMatrixOption(Matrix matrixA) {
-        Matrix matrixB = selectSecondMatrixForOp("addition");
-
-        if ( matrixA.getRows() != matrixB.getRows() || matrixA.getColumns() != matrixB.getColumns()) {
-            System.out.println("Cannot add matrices of different dimensions!");
-        } else {
-            for (int row = 0; row < matrixA.getRows(); row++) {
-                for (int column = 0; column < matrixA.getColumns(); column++) {
-                    double valueA = matrixA.getValue(row, column);
-                    double valueB = matrixB.getValue(row, column);
-                    double finalValue = valueA + valueB;
-                    matrixA.setValue(row, column, finalValue);
-                }
-            }
+    private void addAnotherMatrixOption(Matrix matrix) {
+        try {
+            Matrix matrixB = selectSecondMatrixForOp(1);
+            Matrix matrixC = matrix.addMatrix(matrixB);
             System.out.println("Result:");
-            matrixA.printMatrix();
-        }
-    }
-
-    private void subtractAnotherMatrixOption(Matrix matrixA) {
-        Matrix matrixB = selectSecondMatrixForOp("subtraction");
-
-        if ( matrixA.getRows() != matrixB.getRows() || matrixA.getColumns() != matrixB.getColumns()) {
-            System.out.println("Cannot subtract matrices of different dimensions!");
-        } else {
-            for (int row = 0; row < matrixA.getRows(); row++) {
-                for (int column = 0; column < matrixA.getColumns(); column++) {
-                    double valueA = matrixA.getValue(row, column);
-                    double valueB = matrixB.getValue(row, column);
-                    double finalValue = valueA - valueB;
-                    matrixA.setValue(row, column, finalValue);
-                }
-            }
-            System.out.println("Result:");
-            matrixA.printMatrix();
-        }
-    }
-
-    private void multiplyMatrixOption(Matrix matrix) {
-        System.out.println("Type 1 for scalar multiplication.");
-        System.out.println("Type 2 for matrix multiplication.");
-        System.out.println("Type 3 to cancel operation.");
-
-        switch (scanner.nextInt()) {
-            case 1: multiplyByScalar(matrix);
-                break;
-
-            case 2: multiplyByMatrix(matrix);
-                break;
-
-            case 3:
-                return;
-
-            default:
-                System.out.println("Invalid option!");
-        }
-    }
-
-    private void multiplyByScalar(Matrix matrixA) {
-        System.out.println("Please insert multiplier for scalar multiplication:");
-        double scalar = scanner.nextDouble();
-
-        Matrix matrixB = new Matrix(matrixA.getRows(), matrixA.getColumns());
-
-        for (int i = 0; i < matrixA.getRows(); i++) {
-            for (int j = 0; j < matrixA.getColumns(); j++) {
-                double newValue = (matrixA.getValue(i, j) * scalar);
-                matrixB.setValue(i, j, newValue);
-            }
-        }
-        matrixManager.printMatrix(matrixB);
-    }
-
-    private void multiplyByMatrix(Matrix matrixA) {
-        Matrix matrixB = selectSecondMatrixForOp("multiplication");
-
-        if (matrixA.getColumns() != matrixB.getRows()) {
-            System.out.println("Cannot multiply selected matrices!");
-            System.out.println("The number of columns in matrix A must be equal to the number of rows in matrix B.");
-        } else {
-
-            Matrix matrixC = new Matrix(matrixA.getRows(), matrixB.getColumns());
-
-            for (int i = 0; i < matrixC.getRows(); i++) {
-                for (int j = 0; j < matrixC.getColumns(); j++) {
-                    for (int k = 0; k < matrixA.getColumns(); k++) {
-                        double value = matrixC.getValue(i,j) + (matrixA.getValue(i, k) * matrixB.getValue(k, j));
-                        matrixC.setValue(i, j, value);
-                    }
-                }
-            }
             matrixManager.printMatrix(matrixC);
+        } catch (Exception exception) {
+            System.out.println("Failure: " + exception.getMessage());
+            scanner.nextLine();
         }
     }
 
-    private Matrix selectSecondMatrixForOp(String operation) {
-        String operationString = switch (operation) {
-            case "addition" -> "add to:";
-            case "subtraction" -> "subtract from:";
-            case "multiplication" -> "multiply by:";
-            case "division" -> "divide by: ";
+    private void subtractAnotherMatrixOption(Matrix matrix) {
+        try {
+            Matrix matrixB = selectSecondMatrixForOp(2);
+            Matrix matrixC = matrix.subtractMatrix(matrixB);
+            System.out.println("Result:");
+            matrixManager.printMatrix(matrixC);
+        } catch (Exception exception) {
+            System.out.println("Failure: " + exception.getMessage());
+            scanner.nextLine();
+        }
+    }
+
+    private void multiplyByScalarOption(Matrix matrix) {
+        try{
+            System.out.println("Please insert multiplier for scalar multiplication:");
+            double scalar = scanner.nextDouble();
+            Matrix matrixB = matrix.multiplyByScalar(scalar);
+            System.out.println("Result:");
+            matrixManager.printMatrix(matrixB);
+        } catch (Exception exception) {
+            System.out.println("Failure: " + exception.getMessage());
+            scanner.nextLine();
+        }
+
+    }
+
+    private void multiplyByMatrixOption(Matrix matrix) {
+        try {
+            Matrix matrixB = selectSecondMatrixForOp(3);
+            Matrix matrixC = matrix.multiplyByMatrix(matrixB);
+            System.out.println("Result:");
+            matrixManager.printMatrix(matrixC);
+        } catch (Exception exception) {
+            System.out.println("Failure: " + exception.getMessage());
+        }
+    }
+
+    private Matrix selectSecondMatrixForOp(int opcode) {
+        String operationString = switch (opcode) {
+            case 1 -> "add to:";
+            case 2 -> "subtract from:";
+            case 3 -> "multiply by:";
             default -> null;
         };
 
@@ -192,13 +143,31 @@ public class SubmenuHandler {
         System.out.println("List of matrices:");
 
         int index = 0;
-        for (Matrix matrices : matrixManager.listAllMatrices()) {
+        for (Matrix matrix : matrixManager.listAllMatrices()) {
             System.out.println("\nMatrix n." + (index + 1) + ":");
-            matrices.printMatrix();
+            matrixManager.printMatrix(matrix);
             index++;
         }
-
         return matrixManager.selectMatrix(scanner.nextInt() - 1 );
     }
+
+    private int loopPromptForIntInput(String message) {
+        System.out.println(message);
+        while (!scanner.hasNextInt()) {
+            System.out.println("Invalid input. Please enter an integer:");
+            scanner.next();
+        }
+        return scanner.nextInt();
+    }
+
+    private double loopPromptForDoubleInput(String message) {
+        System.out.println(message);
+        while (!scanner.hasNextDouble()) {
+            System.out.println("Invalid input. Please enter a number:");
+            scanner.next();
+        }
+        return scanner.nextDouble();
+    }
+
 }
 

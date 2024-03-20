@@ -50,18 +50,16 @@ public class MainMenuHandler {
     }
 
     private void createMatrixOption() {
-        System.out.println("Insert number of rows");
-        int rows = scanner.nextInt();
-        System.out.println("Insert number of columns");
-        int columns = scanner.nextInt();
+        int rows = loopPromptForIntInput("Insert number of rows:");
+        int columns = loopPromptForIntInput("Insert number of columns:");
 
         Matrix matrix = new Matrix(rows, columns);
         matrixManager.addMatrixToList(matrix);
 
         for (int row = 0; row < matrix.getRows(); row++) {
             for (int column = 0; column < matrix.getColumns(); column++) {
-                System.out.println("Insert value for position (" + (row + 1 + ", " + (column + 1) + "):"));
-                double value = getValueFromConsole(scanner);
+                String message = "Insert value for position (" + (row + 1) + ", " + (column + 1) + "):";
+                double value = loopPromptForDoubleInput(message);
                 matrix.setValue(row, column, value);
             }
         }
@@ -69,40 +67,48 @@ public class MainMenuHandler {
     }
 
     private void listMatricesOption() {
+        printMatrixListToConsole();
+    }
+
+    private void selectMatrixOption() {
+        printMatrixListToConsole();
+        try {
+            int selection = loopPromptForIntInput("Enter the number of the matrix you want to select:");
+            Matrix selectedMatrix = matrixManager.selectMatrix(selection);
+            System.out.println("Selected Matrix:");
+            matrixManager.printMatrix(selectedMatrix);
+            subMenuHandler.startOperationsSubmenuOn(selectedMatrix);
+        } catch (Exception exception) {
+            System.out.println("Failure: " + exception.getMessage());
+        }
+    }
+
+    private void printMatrixListToConsole() {
         System.out.println("List of matrices:");
         int index = 0;
         for (Matrix matrix : matrixManager.listAllMatrices()) {
             System.out.println("\nMatrix n." + (index + 1) + ":");
-            matrix.printMatrix();
+            matrixManager.printMatrix(matrix);
             index++;
         }
         System.out.println(" ");
     }
 
-    private void selectMatrixOption() {
-        System.out.println("List of available matrices:");
-
-        int index = 0;
-        for (Matrix matrix : matrixManager.listAllMatrices()) {
-            System.out.println("\nMatrix n." + (index + 1) + ":");
-            matrix.printMatrix();
-            index++;
+    private int loopPromptForIntInput(String message) {
+        System.out.println(message);
+        while (!scanner.hasNextInt()) {
+            System.out.println("Invalid input. Please enter an integer:");
+            scanner.next();
         }
-
-        try {
-            System.out.println("Enter the number of the matrix you want to select:");
-            Matrix selectedMatrix = matrixManager.selectMatrix(scanner.nextInt() - 1 );
-            System.out.println("Selected Matrix:");
-            selectedMatrix.printMatrix();
-            System.out.println(" ");
-            subMenuHandler.startOperationsSubmenuOnMatrix(selectedMatrix);
-        } catch (Exception e) {
-            System.out.println("No Such Matrix!");
-        }
+        return scanner.nextInt();
     }
 
-    private static double getValueFromConsole(Scanner scanner) {
-        System.out.println("Insert desired value:");
+    private double loopPromptForDoubleInput(String message) {
+        System.out.println(message);
+        while (!scanner.hasNextDouble()) {
+            System.out.println("Invalid input. Please enter a number:");
+            scanner.next();
+        }
         return scanner.nextDouble();
     }
 }
