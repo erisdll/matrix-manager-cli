@@ -23,4 +23,13 @@ public class MatrixManager {
     public List<Matrix> listAllMatrices() {
         return Collections.unmodifiableList(matricesArrayList);
     }
+
+    public void printMatrix(Matrix matrix) {
+        for (int i = 0; i < matrix.getRows(); i++) {
+            for (int j = 0; j < matrix.getColumns(); j++) {
+                System.out.print(matrix.getValue(i, j) + " ");
+            }
+            System.out.println();
+        }
+    }
 }
