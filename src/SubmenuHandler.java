@@ -142,16 +142,19 @@ public class SubmenuHandler {
         }
     }
 
-    private void multiplyByScalar(Matrix matrix) {
+    private void multiplyByScalar(Matrix matrixA) {
         System.out.println("Please insert multiplier for scalar multiplication:");
         int scalar = scanner.nextInt();
 
-        for (int row = 0; row < matrix.getRows(); row++) {
-            for (int column = 0; column < matrix.getColumns(); column++) {
-                int newValue = (matrix.getValue(row, column) * scalar);
-                matrix.setValue(column, row, newValue);
+        Matrix matrixB = new Matrix(matrixA.getRows(), matrixA.getColumns());
+
+        for (int i = 0; i < matrixA.getRows(); i++) {
+            for (int j = 0; j < matrixA.getColumns(); j++) {
+                int newValue = (matrixA.getValue(i, j) * scalar);
+                matrixB.setValue(i, j, newValue);
             }
         }
+        matrixManager.printMatrix(matrixB);
     }
 
     private void multiplyByMatrix(Matrix matrixA) {
