@@ -56,14 +56,32 @@ public class MainMenuHandler {
         Matrix matrix = new Matrix(rows, columns);
         matrixManager.addMatrixToList(matrix);
 
-        for (int row = 0; row < matrix.getRows(); row++) {
-            for (int column = 0; column < matrix.getColumns(); column++) {
-                String message = "Insert value for position (" + (row + 1) + ", " + (column + 1) + "):";
+        System.out.println("Type 1 to auto populate the matrix.");
+        System.out.println("Type 2 to manually populate the matrix.");
+
+        int choice;
+        do {
+            System.out.println("Invalid choice! Enter either 1 or 2.");
+            choice = scanner.nextInt();
+        } while (choice != 1 && choice != 2);
+
+        if (choice == 1) {
+            matrix.randomlyPopulateMatrix();
+        } else {
+            manuallyPopulateMatrix(matrix);
+        }
+
+        System.out.println("Matrix created successfully!");
+    }
+
+    private void manuallyPopulateMatrix(Matrix matrix) {
+        for (int i = 0; i < matrix.getRows(); i++) {
+            for (int j = 0; j < matrix.getColumns(); j++) {
+                String message = "Insert value for position (" + (i + 1) + ", " + (j + 1) + "):";
                 double value = loopPromptForDoubleInput(message);
-                matrix.setValue(row, column, value);
+                matrix.setValue(i, j, value);
             }
         }
-        System.out.println("Matrix created successfully!");
     }
 
     private void listMatricesOption() {
@@ -73,7 +91,7 @@ public class MainMenuHandler {
     private void selectMatrixOption() {
         printMatrixListToConsole();
         try {
-            int selection = loopPromptForIntInput("Enter the number of the matrix you want to select:");
+            int selection = loopPromptForIntInput("Enter the number of the matrix you want to select:") - 1;
             Matrix selectedMatrix = matrixManager.selectMatrix(selection);
             System.out.println("Selected Matrix:");
             matrixManager.printMatrix(selectedMatrix);
