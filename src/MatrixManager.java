@@ -34,4 +34,8 @@ public class MatrixManager {
             System.out.println();
         }
     }
+
+    public void removeMatrixFromList(Matrix matrix) {
+        matricesArrayList.remove(matrix);
+    }
 }
