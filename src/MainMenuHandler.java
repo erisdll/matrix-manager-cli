@@ -92,7 +92,7 @@ public class MainMenuHandler {
         printMatrixListToConsole();
         try {
             int selection = loopPromptForIntInput("Enter the number of the matrix you want to select:") - 1;
-            Matrix selectedMatrix = matrixManager.selectMatrix(selection);
+            Matrix selectedMatrix = matrixManager.getMatrixFromList(selection);
             System.out.println("Selected Matrix:");
             matrixManager.printMatrix(selectedMatrix);
             subMenuHandler.startOperationsSubmenuOn(selectedMatrix);
@@ -104,7 +104,7 @@ public class MainMenuHandler {
     private void printMatrixListToConsole() {
         System.out.println("List of matrices:");
         int index = 0;
-        for (Matrix matrix : matrixManager.listAllMatrices()) {
+        for (Matrix matrix : matrixManager.getAllMatrices()) {
             System.out.println("\nMatrix n." + (index + 1) + ":");
             matrixManager.printMatrix(matrix);
             index++;

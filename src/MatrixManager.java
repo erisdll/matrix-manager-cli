@@ -14,14 +14,14 @@ public class MatrixManager {
         matricesArrayList.add(matrix);
     }
 
-    public Matrix selectMatrix(int index) {
+    public Matrix getMatrixFromList(int index) {
         if (index < 0 || index >= matricesArrayList.size()) {
             throw new IndexOutOfBoundsException();
         }
         return matricesArrayList.get(index);
     }
 
-    public List<Matrix> listAllMatrices() {
+    public List<Matrix> getAllMatrices() {
         return Collections.unmodifiableList(matricesArrayList);
     }
 
