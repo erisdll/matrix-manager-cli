@@ -64,10 +64,11 @@ public class SubmenuHandler {
     }
 
     private void repopulateMatrixOption(Matrix matrix) {
-        for (int row = 0; row < matrix.getRows(); row++) {
-            for (int column = 0; column < matrix.getColumns(); column++) {
-                double value = loopPromptForDoubleInput("Insert value for position (" + row + ", " + column + ").");
-                matrix.setValue(row, column, value);
+        for (int i = 0; i < matrix.getRows(); i++) {
+            for (int j = 0; j < matrix.getColumns(); j++) {
+                String message = "Insert value for position (" + (i + 1) + ", " + (j + 1) + "):";
+                double value = loopPromptForDoubleInput(message);
+                matrix.setValue(i, j, value);
             }
         }
         System.out.println(" ");
