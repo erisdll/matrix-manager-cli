@@ -38,6 +38,15 @@ public class Matrix {
         }
     }
 
+    public Matrix randomlyPopulateMatrix() {
+        for (int i = 0; i < this.getRows(); i++) {
+            for (int j = 0; j < this.getColumns(); j++) {
+                this.setValue(i, j, Math.random() * 1000);
+            }
+        }
+        return this;
+    }
+
     public Matrix addMatrix(Matrix matrixB) {
         if ( this.getRows() != matrixB.getRows() || this.getColumns() != matrixB.getColumns()) {
             throw new IllegalArgumentException("Cannot add matrices of different dimensions!");
