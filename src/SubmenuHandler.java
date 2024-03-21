@@ -9,14 +9,6 @@ public class SubmenuHandler {
         this.scanner = scanner;
         this.matrixManager = matrixManager;
     }
-    public void startOperationsSubmenuOn(Matrix selectedMatrix) {
-        int choice;
-        do {
-            printOperationsSubmenu();
-            choice = scanner.nextInt();
-            handleOperationsSubmenuChoice(choice, selectedMatrix);
-        } while (choice != 0);
-    }
 
     private static void printOperationsSubmenu() {
         System.out.println("Type 1 to repopulate matrix");
@@ -25,7 +17,18 @@ public class SubmenuHandler {
         System.out.println("Type 4 to subtract another matrix");
         System.out.println("Type 5 to multiply matrix by scalar");
         System.out.println("Type 6 to multiply matrix by another matrix");
+        System.out.println("Type 7 to delete matrix");
+        System.out.println("Type 8 to select another matrix");
         System.out.println("Type 0 to return to main menu");
+    }
+
+    public void startOperationsSubmenuOn(Matrix selectedMatrix) {
+        int choice;
+        do {
+            printOperationsSubmenu();
+            choice = scanner.nextInt();
+            handleOperationsSubmenuChoice(choice, selectedMatrix);
+        } while (choice != 0 && choice != 7);
     }
 
     private void handleOperationsSubmenuChoice(int choice, Matrix matrix) {
@@ -54,8 +57,15 @@ public class SubmenuHandler {
                 multiplyByMatrixOption(matrix);
                 break;
 
+            case 7:
+                deleteMatrixOption(matrix);
+                return;
+
+            case 8:
+                selectAnotherMatrixOption();
+                break;
+
             case 0:
-                System.out.println("Exiting program!");
                 return;
 
             default:
@@ -108,7 +118,7 @@ public class SubmenuHandler {
     }
 
     private void multiplyByScalarOption(Matrix matrix) {
-        try{
+        try {
             System.out.println("Please insert multiplier for scalar multiplication:");
             double scalar = scanner.nextDouble();
             Matrix matrixB = matrix.multiplyByScalar(scalar);
@@ -132,6 +142,39 @@ public class SubmenuHandler {
         }
     }
 
+    private void deleteMatrixOption(Matrix matrix) {
+        try {
+            matrixManager.removeMatrixFromList(matrix);
+            System.out.println("Matrix deleted successfully!");
+        } catch (Exception exception) {
+            System.out.println("Failed to delete matrix! Reason: " + exception.getMessage());
+        }
+    }
+
+    private void selectAnotherMatrixOption() {
+        try {
+            System.out.println("List of matrices:");
+
+            int index = 0;
+            for (Matrix matrix : matrixManager.getAllMatrices()) {
+                System.out.println("\nMatrix n." + (index + 1) + ":");
+                matrixManager.printMatrix(matrix);
+                index++;
+            }
+
+            int selection = loopPromptForIntInput("Enter the number of the matrix you want to select:") - 1;
+            Matrix selectedMatrix = matrixManager.getMatrixFromList(selection);
+            System.out.println("Selected Matrix:");
+            matrixManager.printMatrix(selectedMatrix);
+            startOperationsSubmenuOn(selectedMatrix);
+
+        } catch (Exception exception) {
+            System.out.println("Failure: " + exception.getMessage());
+        }
+        System.out.println(" ");
+
+    }
+
     private Matrix selectSecondMatrixForOp(int opcode) {
         String operationString = switch (opcode) {
             case 1 -> "add to:";
@@ -144,12 +187,12 @@ public class SubmenuHandler {
         System.out.println("List of matrices:");
 
         int index = 0;
-        for (Matrix matrix : matrixManager.listAllMatrices()) {
+        for (Matrix matrix : matrixManager.getAllMatrices()) {
             System.out.println("\nMatrix n." + (index + 1) + ":");
             matrixManager.printMatrix(matrix);
             index++;
         }
-        return matrixManager.selectMatrix(scanner.nextInt() - 1 );
+        return matrixManager.getMatrixFromList(scanner.nextInt() - 1);
     }
 
     private int loopPromptForIntInput(String message) {
