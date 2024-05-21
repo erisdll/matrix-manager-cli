@@ -62,6 +62,7 @@ Upon running the application, you'll be greeted with a main menu. The available 
 ```bash
   Main Menu > 3
   List of matrices:
+
   Matrix n.1:
   1.0 2.0
   3.0 4.0
