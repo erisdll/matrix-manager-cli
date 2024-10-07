@@ -24,7 +24,7 @@ Matrix Manager CLI is a command-line application for managing and performing ope
 
 3. **Run the application:**
 ```bash
-  java src.Main
+  java -cp src Main
   ```
 
 ## Usage
